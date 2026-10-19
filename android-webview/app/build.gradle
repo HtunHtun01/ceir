@@ -1,0 +1,25 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'mm.ceir.checker'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'mm.ceir.checker'
+        minSdk 23
+        targetSdk 35
+        versionCode 2
+        versionName '2.0-gecko'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+repositories {
+    maven { url 'https://maven.mozilla.org/maven2/' }
+}
+
+dependencies {
+    implementation 'org.mozilla.geckoview:geckoview:154.0.20260814215756'
+}
