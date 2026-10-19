@@ -1,4 +1,4 @@
-name: Build CEIR Checker APK
+name: build CEIR Checker APK
 on:
   workflow_dispatch:
   push:
