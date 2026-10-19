@@ -3,9 +3,7 @@ name: Build CEIR Checker APK
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'Android-webview/**'
-      - 'android-webview/**'
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -25,12 +23,12 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Build Debug APK
+      - name: Locate Project and Build
         run: |
-          if [ -d "Android-webview" ]; then
-            cd Android-webview
-          elif [ -d "android-webview" ]; then
-            cd android-webview
+          TARGET_DIR=$(find . -maxdepth 2 -name "settings.gradle" -o -name "build.gradle" | head -n 1 | xargs dirname)
+          if [ -n "$TARGET_DIR" ] && [ "$TARGET_DIR" != "." ]; then
+            echo "Entering project directory: $TARGET_DIR"
+            cd "$TARGET_DIR"
           fi
           gradle assembleDebug --no-daemon
 
@@ -38,8 +36,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ceir-checker-debug-apk
-          path: |
-            Android-webview/app/build/outputs/apk/debug/*.apk
-            android-webview/app/build/outputs/apk/debug/*.apk
-            app/build/outputs/apk/debug/*.apk
+          path: "**/build/outputs/apk/debug/*.apk"
           if-no-files-found: error
+          
